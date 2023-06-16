@@ -1,32 +1,26 @@
 package ru.netology.films;
 
 public class MovieManager {
-    private String[] movies;
-    private int countLast;
 
-    private static final int COUNT_LAST_DEFAULT = 10;
+    private String[] movies = new String[0];
+   private int limit;
 
     MovieManager() {
-        this(COUNT_LAST_DEFAULT);
+         this.limit = 10;
     }
 
-    MovieManager(int countLast) {
-        this.countLast = countLast;
-        movies = new String[0];
+    MovieManager(int limit) {
+        this.limit = limit;
     }
 
     public void add(String movie) {
-        if (movies.length == 0) {
-            movies = new String[1];
-            movies[0] = movie;
-        } else {
-            String[] movieNew = new String[movies.length + 1];
-            for (int i = 0; i < movies.length; i++) {
-                movieNew[i] = movies[i];
-            }
-            movieNew[movies.length] = movie;
-            movies = movieNew;
+        String[] newMovie = new String[movies.length + 1];
+        for (int i = 0; i < movies.length; i++) {
+            newMovie[i] = movies[i];
         }
+        newMovie[newMovie.length - 1] = movie;
+        movies = newMovie;
+
     }
 
     public String[] findAll() {
@@ -34,13 +28,15 @@ public class MovieManager {
     }
 
     public String[] findLast() {
-        int countLast = movies.length > this.countLast ? this.countLast : movies.length;
-        if (countLast == 0) {
-            return new String[0];
+        int resultLength;
+        if (movies.length < limit) {
+            resultLength = movies.length;
+        } else {
+            resultLength = limit;
         }
-        String[] result = new String[countLast];
-        for (int i = movies.length - countLast; i < movies.length; i++) {
-            result[i - movies.length + countLast] = movies[i];
+        String[] result = new String[resultLength];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = movies[movies.length - 1 - i];
         }
         return result;
     }
